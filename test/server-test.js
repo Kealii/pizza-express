@@ -46,4 +46,19 @@ describe('Server', () => {
         });
     });
 
+    describe('POST /pizzas', () => {
+        it('should not return 404', (done) => {
+            this.request.post('/pizzas', (error, response) => {
+            if (error) { done(error) }
+            assert.notEqual(response.statusCode, 404);
+            done();
+            });
+        });
+
+        it('should receive and store data', (done) => {
+            assert(true);
+            done();
+        });
+    });
+
 });
