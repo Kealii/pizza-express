@@ -1,17 +1,16 @@
 const assert = require('assert');
 const request = require('request');
 const app = require('../server');
+const fixtures = require('./fixtures');
 
 describe('Server', () => {
 
     before((done) => {
         this.port = 9876;
-
         this.server = app.listen(this.port, (err, result) => {
                 if (err) { return done(err); }
         done();
         });
-
         this.request = request.defaults({
             baseUrl: 'http://localhost:9876/'
         });
@@ -61,14 +60,9 @@ describe('Server', () => {
         });
 
         it('should receive and store data', (done) => {
-            var validPizza = {
-                pizza: {
-                    name: 'A vegan pizza',
-                    toppings: [ 'mushrooms', 'onions', 'garlic', 'black olives' ]
-                }
-            };
+            var payload = { pizza: fixtures.validPizza };
 
-            this.request.post('/pizzas', { form: validPizza }, (error, response) => {
+            this.request.post('/pizzas', { form: payload }, (error, response) => {
                 if (error) { done(error); }
                 var pizzaCount = Object.keys(app.locals.pizzas).length;
                 assert.equal(pizzaCount, 1, `Expected 1 pizzas, found ${pizzaCount}`)
