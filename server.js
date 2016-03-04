@@ -23,8 +23,9 @@ app.get('/pizzas/:id', (request, response) => {
 
 app.post('/pizzas', (request, response) => {
     var id = generateId();
-    app.locals.pizzas[id] = request.body
-    response.sendStatus(201);
+    if (!request.body.pizza) { return response.sendStatus(400); }
+    app.locals.pizzas[id] = request.body.pizza;
+    response.redirect('/pizzas/' + id);
 });
 
 if (!module.parent) {
